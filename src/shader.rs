@@ -1,5 +1,7 @@
 use std::{rc::Rc, borrow::Cow, mem::size_of, collections::HashMap};
 
+use gl::Uniform2d;
+
 use crate::internal::{RawId, RawIdManager};
 
 #[derive(Clone)]
@@ -429,8 +431,20 @@ pub trait UniformValid<T>{
     fn get_ptr(&self) -> *const T;
 }
 
-impl<T> UniformValid<T> for T{
-    fn get_ptr(&self) -> *const T {
+impl UniformValid<f32> for f32{
+    fn get_ptr(&self) -> *const f32 {
+        self
+    }
+}
+
+impl UniformValid<i32> for i32{
+    fn get_ptr(&self) -> *const i32 {
+        self
+    }
+}
+
+impl UniformValid<u32> for u32{
+    fn get_ptr(&self) -> *const u32 {
         self
     }
 }
