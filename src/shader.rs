@@ -423,11 +423,11 @@ macro_rules! make_container {
             $crate::paste::paste!{
                     impl $name{
                     pub fn [<get_ $fname>](&self) -> $ftype{
-                        self.$fname
+                        self.$fname.1
                     }
     
                     pub fn [<set_ $fname>](&mut self, v: $ftype){
-                        self.$fname = v;
+                        self.$fname.1 = v;
                     }
                 }
             }
