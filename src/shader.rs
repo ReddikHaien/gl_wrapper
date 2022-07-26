@@ -420,7 +420,7 @@ macro_rules! make_container {
 
         //getters and setters
         $(
-            paste::paste!{
+            $crate::paste::paste!{
                     impl $name{
                     pub fn [<get_ $fname>](&self) -> $ftype{
                         self.$fname
