@@ -417,6 +417,21 @@ macro_rules! make_container {
                 }
             }
         }
+
+        //getters and setters
+        $(
+            paste::paste!{
+                    impl $name{
+                    pub fn [<get_ $fname>](&self) -> $ftype{
+                        self.$fname
+                    }
+    
+                    pub fn [<set_ $fname>](&mut self, v: $ftype){
+                        self.$fname = v;
+                    }
+                }
+            }
+        )*
         
         impl $crate::shader::UniformContainer for $name{
             fn bind(&self){
@@ -427,6 +442,8 @@ macro_rules! make_container {
         }
     };
 }
+
+
 
 pub trait UniformValid<T>{
     fn get_ptr(&self) -> *const T;
