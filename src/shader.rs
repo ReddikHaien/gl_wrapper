@@ -398,7 +398,7 @@ macro_rules! make_container {
     }) => {
         pub struct $name{
             $(
-                pub $fname: (crate::shader::Uniform,$ftype),
+                pub $fname: ($crate::shader::Uniform,$ftype),
             )*
         }
 
