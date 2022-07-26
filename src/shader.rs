@@ -429,20 +429,21 @@ pub trait UniformValid<T>{
     fn get_ptr(&self) -> *const T;
 }
 
-impl<T, const X: usize> UniformValid<T> for [T;X] {
+impl<T> UniformValid<T> for T{
     fn get_ptr(&self) -> *const T {
-        self.as_ptr()
+        self
     }
 }
+
+impl<T> UniformValid<T> for dyn AsRef<T>{
+    fn get_ptr(&self) -> *const T {
+        self.as_ref().get_ptr()
+    }
+}
+
 
 impl<T> UniformValid<T> for [T]{
     fn get_ptr(&self) -> *const T {
         self.as_ptr()
-    }
-}
-
-impl <T> UniformValid<T> for T {
-    fn get_ptr(&self) -> *const T {
-        self as *const T
     }
 }
