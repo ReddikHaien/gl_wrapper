@@ -1,6 +1,7 @@
 use std::{rc::Rc, borrow::Cow, mem::size_of, collections::HashMap};
 
 use gl::Uniform2d;
+use glam::{Mat4, Mat3, Vec2, Vec3, Vec4, Quat, IVec2, IVec3, IVec4, UVec2, UVec3, UVec4};
 
 use crate::internal::{RawId, RawIdManager};
 
@@ -449,20 +450,44 @@ impl UniformValid<u32> for u32{
     }
 }
 
-impl<T> UniformValid<T> for dyn AsRef<[T]>{
-    fn get_ptr(&self) -> *const T {
-        self.as_ref().as_ptr()
-    }
+macro_rules! arr_impl {
+    ($prim:ty, $($t:ty)*) => {
+        $(
+            impl UniformValid<$prim> for $t{
+                fn get_ptr(&self) -> *const $prim{
+                    self.as_ref().as_ptr()
+                }
+            }
+        )*
+    };
 }
 
-impl<T, const X: usize> UniformValid<T> for dyn AsRef<[T;X]>{
-    fn get_ptr(&self) -> *const T {
-        self.as_ref().as_ref().as_ptr()
-    }
-}
+arr_impl!(
+    f32,
+    Mat4
+    Mat3
+    Vec2
+    Vec3
+    Vec4
+    Quat
+    [f32]
+);
 
+arr_impl!(
+    i32,
+    IVec2
+    IVec3
+    IVec4
+);
 
-impl<T> UniformValid<T> for [T]{
+arr_impl!(
+    u32,
+    UVec2
+    UVec3
+    UVec4
+);
+
+impl<T,const X: usize> UniformValid<T> for [T;X]{
     fn get_ptr(&self) -> *const T {
         self.as_ptr()
     }
