@@ -435,9 +435,15 @@ impl<T> UniformValid<T> for T{
     }
 }
 
-impl<T> UniformValid<T> for dyn AsRef<T>{
+impl<T> UniformValid<T> for dyn AsRef<[T]>{
     fn get_ptr(&self) -> *const T {
-        self.as_ref().get_ptr()
+        self.as_ref().as_ptr()
+    }
+}
+
+impl<T, const X: usize> UniformValid<T> for dyn AsRef<[T;X]>{
+    fn get_ptr(&self) -> *const T {
+        self.as_ref().as_ref().as_ptr()
     }
 }
 
